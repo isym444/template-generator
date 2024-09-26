@@ -1,3 +1,4 @@
+import importlib.resources
 import pathlib
 from logging import getLogger
 from typing import *
@@ -5,7 +6,6 @@ from typing import *
 import appdirs
 import mako.lookup
 import mako.template
-import pkg_resources
 
 import onlinejudge_template.generator.hook as hook
 from onlinejudge_template.types import *
@@ -16,7 +16,7 @@ logger = getLogger(__name__)
 def _get_template(template_file: str) -> mako.template.Template:
     directories = [
         str(pathlib.Path(appdirs.user_config_dir('online-judge-tools')) / 'template'),
-        pkg_resources.resource_filename('onlinejudge_template_resources', 'template'),
+        importlib.resources.files('onlinejudge_template_resources') / 'template',
     ]
     lookup = mako.lookup.TemplateLookup(directories=directories, input_encoding="utf-8", output_encoding="utf-8")
     path = pathlib.Path(template_file)
